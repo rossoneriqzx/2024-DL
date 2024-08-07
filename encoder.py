@@ -7,8 +7,8 @@ num_hiddens = 256
 
 # Add(residual) & Norm 
 class AddNorm(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(AddNorm, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(AddNorm, self).__init__()
         self.add_norm = nn.LayerNorm(num_hiddens)
         self.dropout = nn.Dropout(0.1)
     
@@ -22,39 +22,46 @@ class AddNorm(nn.Module):
 # Enhancing the Nonlinear Expressive Power of Models, 
 # Providing Local Processing and Feature Extraction, and Increasing the Depth and Capacity of Models.
 class Pos_FFN(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(Pos_FFN, self).__init__(*args, **kwargs)
-        self.lin_1 = nn.Linear(num_hiddens, 512, bias=False)
+    def __init__(self):
+        super(Pos_FFN, self).__init__()
+        self.lin1 = nn.Linear(num_hiddens, 512, bias=True)
+        self.norm1 = nn.BatchNorm1d(512)
         self.relu1 = nn.ReLU()
-        self.lin_2 = nn.Linear(512, num_hiddens, bias=False)
+        self.lin2 = nn.Linear(512, num_hiddens, bias=True)
+        self.norm2 = nn.BatchNorm1d(num_hiddens)
         self.relu2 = nn.ReLU()
+        self.dropout = nn.Dropout(0.1)
     
     def forward(self, X):
-        X = self.lin_1(X)
+        X = self.lin1(X)
+        X = self.norm1(X)
         X = self.relu1(X)
-        X = self.lin_2(X)
+        X = self.dropout(out)
+        X = self.lin2(X)
+        X = self.norm2(X)
         X = self.relu2(X)
+        X = self.dropout(out)
         return X
 
 class Encoder_block(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(Encoder_block, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Encoder_block, self).__init__()
         self.attention = Attention_block()
-        self.add_norm_1 = AddNorm()
+        self.addnorm1 = AddNorm()
         self.FFN = Pos_FFN()
-        self.add_norm_2 = AddNorm()
+        self.addnorm2 = AddNorm()
     
     def forward(self, X, I_m):
         I_m = I_m.unsqueeze(-2)
         X_1 = self.attention(X, I_m)
-        X = self.add_norm_1(X, X_1)
+        X = self.addnorm1(X, X_1)
         X_1 = self.FFN(X)
-        X = self.add_norm_2(X, X_1)
+        X = self.addnorm2(X, X_1)
         return X
 
 class Encoder(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(Encoder, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Encoder, self).__init__()
         self.ebd = EBD()
         self.encoder_blks = nn.Sequential()
         for _ in range(4):
