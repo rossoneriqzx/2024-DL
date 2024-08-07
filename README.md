@@ -11,3 +11,16 @@ Encoder: Stacks multiple attention and feed-forward layers to encode the input s
 Decoder: Stacks multiple attention and feed-forward layers to decode the encoded sequence into the output sequence.
 
 Transformer: Combines the encoder and decoder to form the complete model.
+
+Note
+This is an initial model that requires training data to be applied to actual tasks. To use this model:
+
+Prepare your data: Collect and clean your dataset.
+
+Preprocess the data: Convert text to token indices and apply any necessary preprocessing steps.
+
+Train the model: Configure training parameters (e.g., learning rate, batch size) and train the model with your data.
+
+Evaluate and optimize: Use a validation set to monitor performance and adjust the model as needed.
+
+Deploy the model: Save the trained model and deploy it for your specific use case.
