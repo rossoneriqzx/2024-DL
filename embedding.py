@@ -5,8 +5,8 @@ from torch import nn
 num_hiddens = 256
 
 class EBD(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(EBD, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(EBD, self).__init__()
         # 1000 means vocabulary size
         self.word_ebd = nn.Embedding(1000, num_hiddens)
         # 256 is the Position length
