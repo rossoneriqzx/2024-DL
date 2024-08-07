@@ -4,8 +4,8 @@ from .encoder import Encoder
 from .decoder import Decoder
 
 class Transformer(nn.Module):
-    def __init__(self, *args, **kwargs) -> None:
-        super(Transformer, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super(Transformer, self).__init__()
         self.encoder = Encoder()
         self.decoder = Decoder()
     
