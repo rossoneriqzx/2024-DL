@@ -22,7 +22,7 @@ def transpose_2(O):
     O = O.reshape(O.shape[0], O.shape[1], -1)
     return O
 
-# Multi-head attention
+# Multi-head self attention
 class Attention_block(nn.Module):
     def __init__(self):
         super(Attention_block, self).__init__()
